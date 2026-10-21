@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wayfinder Map — Kedar's Portfolio Redesign</title>
+  <style>
+    :root {
+      --bg: #090a0f;
+      --surface: #11131c;
+      --surface-border: #1e2235;
+      --surface-hover: #171a28;
+      --text: #e2e8f0;
+      --text-muted: #8492a6;
+      --text-dim: #4e5971;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --success: #22c55e;
+      --success-bg: rgba(34, 197, 94, 0.12);
+      --success-border: rgba(34, 197, 94, 0.3);
+      --frontier: #38bdf8;
+      --frontier-bg: rgba(56, 189, 248, 0.1);
+      --frontier-border: rgba(56, 189, 248, 0.35);
+      --blocked: #64748b;
+      --blocked-bg: rgba(100, 116, 139, 0.08);
+      --blocked-border: rgba(100, 116, 139, 0.25);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 40px 24px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 28px;
+    }
+
+    .badge-map {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .destination-box {
+      background: linear-gradient(180deg, #131726 0%, #0d101a 100%);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 20px;
+    }
+
+    .destination-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #818cf8;
+      margin-bottom: 6px;
+    }
+
+    .destination-text {
+      font-size: 16px;
+      color: #cbd5e1;
+      font-weight: 400;
+    }
+
+    /* Progress bar */
+    .progress-section {
+      margin: 32px 0 40px 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--surface-border);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 44.4%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e 0%, #38bdf8 100%);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Flow Chart / Visual Pipeline */
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flowchart-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+
+    svg.chart {
+      width: 100%;
+      min-width: 800px;
+      height: auto;
+      display: block;
+    }
+
+    /* Grid of tickets */
+    .tickets-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .column {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .column-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .column-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .col-closed .column-title { color: var(--success); }
+    .col-frontier .column-title { color: var(--frontier); }
+    .col-blocked .column-title { color: var(--blocked); }
+
+    /* Card */
+    .card {
+      background: #0d0f17;
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .card.status-closed {
+      border-left: 3px solid var(--success);
+    }
+
+    .card.status-frontier {
+      border-left: 3px solid var(--frontier);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.04) 0%, #0d0f17 100%);
+    }
+
+    .card.status-blocked {
+      border-left: 3px solid var(--blocked);
+      opacity: 0.75;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .ticket-id {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .card:hover .ticket-id {
+      color: var(--accent);
+    }
+
+    .ticket-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-closed {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .badge-frontier {
+      background: var(--frontier-bg);
+      color: var(--frontier);
+      border: 1px solid var(--frontier-border);
+    }
+
+    .badge-blocked {
+      background: var(--blocked-bg);
+      color: #94a3b8;
+      border: 1px solid var(--blocked-border);
+    }
+
+    .ticket-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .ticket-summary {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .unlocked-tag {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #a5b4fc;
+    }
+
+    /* Fog and Out of scope */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 24px;
+    }
+
+    .meta-box {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .meta-box h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-box.fog h3 { color: #f59e0b; }
+    .meta-box.out h3 { color: #ef4444; }
+
+    .meta-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .meta-list li {
+      font-size: 13px;
+      color: var(--text-muted);
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .meta-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+    }
+
+    .meta-list strong {
+      color: #e2e8f0;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--surface-border);
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge-map">🗺️ Wayfinder Map • kedarrio/portfolio#1</div>
+      <h1>Portfolio Redesign — Decision Map</h1>
+      
+      <div class="destination-box">
+        <div class="destination-label">Destination</div>
+        <div class="destination-text">
+          A locked design and content specification for Kedar's portfolio website redesign—settling commercial positioning, academic-to-commercial case study translation, unified content schema, homepage scroll narrative, and WebGL/audio sensory balance—ready for front-end implementation.
+        </div>
+      </div>
+    </header>
+
+    <!-- Progress Tracker -->
+    <div class="progress-section">
+      <div class="progress-meta">
+        <span>Map Progress (Decisions Settled)</span>
+        <span>4 of 9 Tickets Closed (44%)</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Visual Dependency Pipeline -->
+    <div class="section-title">
+      <span>Pipeline & Dependency Graph</span>
+    </div>
+    
+    <div class="flowchart-wrapper">
+      <svg class="chart" viewBox="0 0 940 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 8 5 L 0 9 z" fill="#4e5971" />
+          </marker>
+          <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+          </marker>
+        </defs>
+
+        <!-- Connecting Lines -->
+        <!-- #2 -> #3 -->
+        <path d="M 170 80 L 220 80" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" />
+        <!-- #3 -> #9 -->
+        <path d="M 290 120 L 290 180" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" />
+        <!-- #3 -> #5 -->
+        <path d="M 360 80 L 410 80" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" />
+        <!-- #5 -> #10 -->
+        <path d="M 480 120 L 480 180" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
+        <!-- #5 -> #4 -->
+        <path d="M 550 65 L 610 50" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
+        <!-- #5 -> #6 -->
+        <path d="M 550 80 L 610 110" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
+        <!-- #5 -> #7 -->
+        <path d="M 550 95 L 610 170" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
+        <!-- #6 -> #7 -->
+        <path d="M 680 140 L 680 150" stroke="#4e5971" stroke-width="1.5" stroke-dasharray="3 3" />
+        <!-- #7 -> #8 -->
+        <path d="M 750 190 L 800 190" stroke="#4e5971" stroke-width="2" marker-end="url(#arrow)" />
+
+        <!-- Nodes -->
+        <!-- #2 Closed -->
+        <g transform="translate(30, 45)">
+          <rect width="140" height="70" rx="8" fill="#13231a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="12" y="24" fill="#22c55e" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#2 BENCHMARKS</text>
+          <text x="12" y="44" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">3-Tier Taxonomy</text>
+          <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">Dual-Anchor Model</text>
+        </g>
+
+        <!-- #3 Closed -->
+        <g transform="translate(220, 45)">
+          <rect width="140" height="70" rx="8" fill="#13231a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="12" y="24" fill="#22c55e" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#3 POSITIONING</text>
+          <text x="12" y="44" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Systems & Interaction</text>
+          <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">Design Partner</text>
+        </g>
+
+        <!-- #9 Closed -->
+        <g transform="translate(220, 180)">
+          <rect width="140" height="70" rx="8" fill="#13231a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="12" y="24" fill="#22c55e" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#9 AI MARKET</text>
+          <text x="12" y="44" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Context Design</text>
+          <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">Workbenches vs Chat</text>
+        </g>
+
+        <!-- #5 Closed -->
+        <g transform="translate(410, 45)">
+          <rect width="140" height="70" rx="8" fill="#13231a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="12" y="24" fill="#22c55e" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#5 ARCHIVE AUDIT</text>
+          <text x="12" y="44" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Unified Showcase</text>
+          <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">2-Layer Tags & Flow</text>
+        </g>
+
+        <!-- #10 Frontier Task -->
+        <g transform="translate(410, 180)">
+          <rect width="140" height="70" rx="8" fill="#0d1c28" stroke="#38bdf8" stroke-width="2"/>
+          <text x="12" y="24" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#10 RAW DUMP</text>
+          <text x="12" y="44" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Drop PDFs & Media</text>
+          <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">HITL Task Ticket</text>
+        </g>
+
+        <!-- #4 Frontier Grilling -->
+        <g transform="translate(610, 20)">
+          <rect width="140" height="60" rx="8" fill="#0d1c28" stroke="#38bdf8" stroke-width="2"/>
+          <text x="12" y="22" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#4 TRANSLATION</text>
+          <text x="12" y="40" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Academic Reframe</text>
+          <text x="12" y="52" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="9">Commercial buyers</text>
+        </g>
+
+        <!-- #6 Frontier Prototype -->
+        <g transform="translate(610, 95)">
+          <rect width="140" height="60" rx="8" fill="#0d1c28" stroke="#38bdf8" stroke-width="2"/>
+          <text x="12" y="22" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#6 CONTENT SCHEMA</text>
+          <text x="12" y="40" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Universal 4-Part</text>
+          <text x="12" y="52" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="9">Case study schema</text>
+        </g>
+
+        <!-- #7 Frontier Grilling -->
+        <g transform="translate(610, 170)">
+          <rect width="140" height="60" rx="8" fill="#0d1c28" stroke="#38bdf8" stroke-width="2"/>
+          <text x="12" y="22" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#7 HOMEPAGE FLOW</text>
+          <text x="12" y="40" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Scroll Narrative</text>
+          <text x="12" y="52" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="9">Story beats & sections</text>
+        </g>
+
+        <!-- #8 Blocked Grilling -->
+        <g transform="translate(800, 160)">
+          <rect width="125" height="80" rx="8" fill="#13151f" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="10" y="22" fill="#94a3b8" font-family="ui-monospace, monospace" font-size="10" font-weight="bold">#8 DESIGN TOKENS</text>
+          <text x="10" y="42" fill="#cbd5e1" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">DESIGN.md</text>
+          <text x="10" y="56" fill="#64748b" font-family="-apple-system, sans-serif" font-size="9">Visual tokens, lines,</text>
+          <text x="10" y="68" fill="#64748b" font-family="-apple-system, sans-serif" font-size="9">WebGL & Audio</text>
+        </g>
+
+        <!-- Final Spec Target -->
+        <g transform="translate(800, 45)">
+          <rect width="125" height="70" rx="8" fill="#1e1838" stroke="#a855f7" stroke-width="1.5"/>
+          <text x="10" y="22" fill="#c084fc" font-family="ui-monospace, monospace" font-size="10" font-weight="bold">DESTINATION</text>
+          <text x="10" y="42" fill="#f3e8ff" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Locked Spec</text>
+          <text x="10" y="58" fill="#c084fc" font-family="-apple-system, sans-serif" font-size="9">Ready to Build</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Ticket Cards by State -->
+    <div class="tickets-columns">
+      
+      <!-- Closed Column -->
+      <div class="column col-closed">
+        <div class="column-header">
+          <span class="column-title">✅ Decisions Locked</span>
+          <span class="column-count">4</span>
+        </div>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/2" target="_blank" class="card status-closed">
+          <div class="card-top">
+            <span class="ticket-id">#2 • RESEARCH</span>
+            <span class="ticket-badge badge-closed">Closed</span>
+          </div>
+          <div class="ticket-title">Academic-to-Commercial Benchmarks</div>
+          <div class="ticket-summary">Established 3-tier work taxonomy, Dual-Anchor positioning formula, and procedural Web Audio / WebGL performance envelope.</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/3" target="_blank" class="card status-closed">
+          <div class="card-top">
+            <span class="ticket-id">#3 • GRILLING</span>
+            <span class="ticket-badge badge-closed">Closed</span>
+          </div>
+          <div class="ticket-title">Positioning & Target Audience</div>
+          <div class="ticket-summary">Locked title: <code>Systems & Interaction Designer</code>, posture: <code>Design Partner</code>. Primary buyer: Technical founders building complex systems.</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/9" target="_blank" class="card status-closed">
+          <div class="card-top">
+            <span class="ticket-id">#9 • RESEARCH</span>
+            <span class="ticket-badge badge-closed">Closed</span>
+          </div>
+          <div class="ticket-title">Market Viability of AI & Context Design</div>
+          <div class="ticket-summary">Validated Context Design as an urgent market moat: solving prompt fatigue with inspectable state workbenches and reversible diffs.</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/5" target="_blank" class="card status-closed">
+          <div class="card-top">
+            <span class="ticket-id">#5 • GRILLING</span>
+            <span class="ticket-badge badge-closed">Closed</span>
+          </div>
+          <div class="ticket-title">Project Archive Audit & Launch Lineup</div>
+          <div class="ticket-summary">Unified Selected Work layout, 2-layer tags (<code>[origin]/[type]/[name]</code>), universal 4-part case study flow, and raw dump folder.</div>
+        </a>
+      </div>
+
+      <!-- Frontier Column -->
+      <div class="column col-frontier">
+        <div class="column-header">
+          <span class="column-title">⚡ Active Frontier</span>
+          <span class="column-count">4</span>
+        </div>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/10" target="_blank" class="card status-frontier">
+          <div class="card-top">
+            <span class="ticket-id">#10 • TASK</span>
+            <span class="ticket-badge badge-frontier">Unblocked</span>
+          </div>
+          <div class="ticket-title">Ingest Raw Project Archive</div>
+          <div class="ticket-summary">Dump raw PDFs, screenshots, and export folders into <code>docs/raw-projects-dump/</code> at your own pace to build the master inventory.</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/4" target="_blank" class="card status-frontier">
+          <div class="card-top">
+            <span class="ticket-id">#4 • GRILLING</span>
+            <span class="ticket-badge badge-frontier">Unblocked</span>
+          </div>
+          <div class="ticket-title">Academic-to-Commercial Translation</div>
+          <div class="ticket-summary">Reframing academic & experimental projects (Melting Rupee, NFHS survey, Upside Down) so commercial buyers instantly get the value.</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/6" target="_blank" class="card status-frontier">
+          <div class="card-top">
+            <span class="ticket-id">#6 • PROTOTYPE</span>
+            <span class="ticket-badge badge-frontier">Unblocked</span>
+          </div>
+          <div class="ticket-title">Content Schema: Case Study Spec</div>
+          <div class="ticket-summary">Drafting the unified frontmatter & data structure following the 4-part flow (<code>Problem</code> → <code>Scope</code> → <code>Design</code> → <code>Outcome</code>).</div>
+        </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/7" target="_blank" class="card status-frontier">
+          <div class="card-top">
+            <span class="ticket-id">#7 • GRILLING</span>
+            <span class="ticket-badge badge-frontier">Unblocked</span>
+          </div>
+          <div class="ticket-title">Homepage Narrative & Scroll Architecture</div>
+          <div class="ticket-summary">Defining the continuous scroll story: Hero, Selected Work showcase, Notes/Teaser, and Colophon with plain, high-converting copy.</div>
+        </a>
+      </div>
+
+      <!-- Blocked Column -->
+      <div class="column col-blocked">
+        <div class="column-header">
+          <span class="column-title">⏳ Blocked / Downstream</span>
+          <span class="column-count">1</span>
+        </div>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/8" target="_blank" class="card status-blocked">
+          <div class="card-top">
+            <span class="ticket-id">#8 • GRILLING</span>
+            <span class="ticket-badge badge-blocked">Blocked by #6, #7</span>
+          </div>
+          <div class="ticket-title">Design Direction & Tokens (DESIGN.md)</div>
+          <div class="ticket-summary">Establishing visual tokens (color, typography scale, monospace accents) and kinetic line illustration rules for Awwwards-caliber execution.</div>
+          <div class="unlocked-tag">↳ Unlocks once Homepage Flow is locked</div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Fog of War and Out of Scope -->
+    <div class="meta-grid">
+      <div class="meta-box fog">
+        <h3>🌫️ Not Yet Specified (Fog of War)</h3>
+        <ul class="meta-list">
+          <li><strong>Tech Stack & Build Architecture:</strong> Next.js vs Astro vs Vite SPA + WebGL shader approach.</li>
+          <li><strong>Procedural Micro-Audio Assets:</strong> Sound design palette (synthetic vs mechanical haptics) & spatial mute.</li>
+          <li><strong>Media Asset Pipeline:</strong> Video walkthroughs, interactive SVG diagrams, and high-res screen exports.</li>
+          <li><strong>SEO & Structured JSON-LD:</strong> Meta preview tags and OpenGraph dynamic cards.</li>
+        </ul>
+      </div>
+
+      <div class="meta-box out">
+        <h3>🚫 Out of Scope</h3>
+        <ul class="meta-list">
+          <li><strong>Full Production Code Build:</strong> Wayfinder plans the spec; frontend coding starts once the map completes.</li>
+          <li><strong>Client Invoicing / Portal:</strong> Proposals, contracts, or billing automation systems.</li>
+          <li><strong>Complex Multi-Author CMS:</strong> Headless CMS or newsletter infrastructure (content remains static file-based).</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      Wayfinder Map • Project: kedarrio/portfolio • Updated automatically after Ticket #5 Resolution
+    </footer>
+  </div>
+</body>
+</html>
