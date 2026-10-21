@@ -6,7 +6,33 @@ Governed by **Radical Simplicity ("Make It Click")** and built to support **Awww
 
 ---
 
-## 1. Unified Frontmatter / Content Schema Template
+## 1. What Exactly a `visual` Block Entails
+
+Every visual element on a case study—whether in `heroVisual` or inside `problem.visuals[]`, `scope.visuals[]`, `solution.visuals[]`, or `outcome.visuals[]`—is a structured object with 7 explicit properties:
+
+| Property | Type / Options | Description & Purpose |
+|---|---|---|
+| `format` | `static-frame`<br>`video-scrub`<br>`interactive-canvas`<br>`3d-model`<br>`explainer-figure`<br>`prototype-embed` | **The execution medium:**<br>• `static-frame`: High-res retina image / poster frame.<br>• `video-scrub`: Inline video whose timeline scrubs on scroll or plays on view.<br>• `interactive-canvas`: Procedural WebGL shader or interactive React canvas.<br>• `3d-model`: Three.js/OGL scene with orbital or scroll-linked rotation.<br>• `explainer-figure`: Isometric or exploded system architecture flow.<br>• `prototype-embed`: Sandboxed live UI micro-component or interactive stub. |
+| `src` | `string` | Asset file path (e.g. `/assets/dhyan/token-hero.webp`), video URL (H.264/WebM), 3D asset (`.glb`), or registered React/Astro component name (e.g. `DhyanFrictionSimulator`). |
+| `aspectRatio` | `16/9` \| `21/9` \| `4/3` \| `1/1` \| `fullscreen` | Controls layout container sizing and prevents cumulative layout shift (CLS). |
+| `caption` | `string` | Editorial caption underneath the visual explaining the systems significance of what is shown. |
+| `alt` | `string` | Accessible plain-text description for screen-readers and SEO. |
+| `motion.behavior` | `pinned-scrub`<br>`idle-loop`<br>`hover-reveal`<br>`user-driven`<br>`static` | **How the visual animates:**<br>• `pinned-scrub`: Scroll locks the viewport and scrubs the visual timeline.<br>• `idle-loop`: Subtle continuous breathing motion at rest.<br>• `hover-reveal`: Expands details or highlights data under cursor.<br>• `user-driven`: Direct interactive canvas (visitor clicks/drags).<br>• `static`: Traditional motionless display. |
+| `motion.driver` | `scroll` \| `pointer` \| `time` | The clock or input controlling the animation (scroll position, mouse cursor, or GSAP ticker). |
+
+---
+
+## 2. Where Visuals Attach Across the 4 Beats
+
+1. **`heroVisual` (Top of Study)**: Immediate visual payoff before reading (e.g. Dhyan physical QR token + lockscreen, Preservation of Humans 3D celestial sphere, or Audri dual-pane overview).
+2. **`problem.visuals[]`**: Visual evidence of the broken state or baseline failure mode (e.g. screenshot of the addictive screen time loop in Dhyan, photo of messy paper survey records in NFHS).
+3. **`scope.visuals[]`**: Architectural boundary map or system topology (e.g. state machine schematic showing what is inside vs outside the design seam).
+4. **`solution.visuals[]`**: Core interface choreography & interactive sandboxes (e.g. scrubbed video walkthrough, high-density component kit, or interactive friction slider).
+5. **`outcome.visuals[]`**: Real-world proof & deployment artifacts (e.g. photo of the printed QR key in a physical room, screenshot of verified local device logs, or field survey in enumerator hands).
+
+---
+
+## 3. Unified Frontmatter / Content Schema Template
 
 ```yaml
 ---
@@ -29,67 +55,81 @@ executiveHook:
   hookText: "What this proves: [1-2 sentences on systems/engineering takeaway]"
   primaryMetricOrProof: "" # e.g. "-42% turnaround", "Zero validation errors", "+38% deliberation"
 
-# Primary Hero Visual (Top of study: video, WebGL canvas, interactive stub, or poster frame)
+# Dedicated Hero Visual (Top Anchor)
 heroVisual:
   format: "static-frame" # static-frame | video-scrub | interactive-canvas | 3d-model | explainer-figure | prototype-embed
-  src: "" # Asset path, video URL, or registered component id
+  src: "" # asset path, video file, or component identifier
   aspectRatio: "16/9" # 16/9 | 21/9 | 4/3 | 1/1 | fullscreen
   caption: ""
   alt: ""
   motion:
-    behavior: "idle-loop" # idle-loop | pinned-scrub | hover-reveal | user-driven | static
+    behavior: "pinned-scrub" # pinned-scrub | idle-loop | hover-reveal | user-driven | static
     driver: "scroll" # scroll | pointer | time
 
-# 4 Universal Case Study Beats
+# 1. Problem / Idea
 problem:
   brokenState: "" # What was broken or being investigated before starting
   summary: "" # Plain-language context of why this problem mattered
   constraints: [] # [ "e.g. offline-first", "sub-second latency", "zero cloud dependency" ]
-  visuals: [] # Optional visualization blocks (e.g. screenshot of problem loop, breakdown photo)
+  visuals: # Visual evidence of the broken state / baseline
+    - format: "static-frame"
+      src: ""
+      aspectRatio: "16/9"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "static"
+        driver: "time"
 
+# 2. Plan & Scope
 scope:
   framing: "" # Commercial contract vs. applied R&D investigation
   deliverables: [] # [ "e.g. 48-screen design system", "state machine", "hardware token" ]
   seams: "" # What was explicitly out of scope / boundaries
-  visuals: [] # Optional system diagram, architecture map, or boundary flow
+  visuals: # Architectural boundary map or system topology
+    - format: "explainer-figure"
+      src: ""
+      aspectRatio: "16/9"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "hover-reveal"
+        driver: "pointer"
 
+# 3. Design & System
 solution:
   overview: "" # High-level architecture of interface and flows
   mechanics: "" # Key interactions, friction points, or state mechanics
   visuals: # Core interface visual choreography
-    - format: "interactive-canvas" # e.g. interactive slider, WebGL canvas, scrubbed video walkthrough
+    - format: "video-scrub"
       src: ""
+      aspectRatio: "16/9"
       caption: ""
+      alt: ""
       motion:
         behavior: "pinned-scrub"
         driver: "scroll"
 
+# 4. Outcome & Learnings
 outcome:
   summary: "" # What happened when deployed or tested
   metricsOrFindings: [] # [ { label: "", value: "" } ]
   systemReflection: "" # Architectural lesson learned about this class of system
-  visuals: [] # Optional real deployment photo, device in hand, or verification log
+  visuals: # Real deployment proof / device in hand
+    - format: "static-frame"
+      src: ""
+      aspectRatio: "4/3"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "static"
+        driver: "time"
 ---
 ```
 
 ---
 
-## 2. Visualization Engine Specification
-
-Each case study can scale from a clean editorial layout up to a full interactive spectacle without changing the core schema:
-
-| Format | Execution | Example in Kedar's Roster |
-|---|---|---|
-| `static-frame` | Optimized responsive picture (`<img>` / picture set) with fine typography caption. | Screen design overview in *Audri* or *Newleaf*. |
-| `video-scrub` | Inline H.264/WebM video scrubbed smoothly via GSAP ScrollTrigger ticker or played on view. | Mobile app navigation flows or survey entry in *NFHS*. |
-| `interactive-canvas` | Dedicated canvas running procedural GL, Web Audio, or interactive state simulator. | Physical friction slider simulation in *The Melting Rupee*. |
-| `3d-model` | Single-canvas Three.js/OGL scene with orbital control or scroll-driven rotation. | Celestial sphere in the void for *Preservation of Humans*. |
-| `explainer-figure` | Isometric or flat exploded system flow illustrating multi-state mechanics. | Physical token separation loop and device admin hooks in *Dhyan*. |
-| `prototype-embed` | Sandboxed interactive micro-component letting visitor test UI states directly. | Medical report keyboard shortcut state machine in *Audri*. |
-
----
-
-## 3. TypeScript Interface Definition
+## 4. TypeScript Interface Definition
 
 ```typescript
 export type ProjectOrigin =
@@ -108,21 +148,26 @@ export type VisualizationFormat =
   | 'prototype-embed';
 
 export type MotionBehavior =
-  | 'idle-loop'
   | 'pinned-scrub'
+  | 'idle-loop'
   | 'hover-reveal'
   | 'user-driven'
   | 'static';
 
-export interface VisualizationBlock {
+export type MotionDriver =
+  | 'scroll'
+  | 'pointer'
+  | 'time';
+
+export interface VisualBlock {
   format: VisualizationFormat;
   src: string;
+  aspectRatio: '16/9' | '21/9' | '4/3' | '1/1' | 'fullscreen';
   caption?: string;
-  alt?: string;
-  aspectRatio?: '16/9' | '21/9' | '4/3' | '1/1' | 'fullscreen';
+  alt: string;
   motion?: {
     behavior: MotionBehavior;
-    driver?: 'scroll' | 'pointer' | 'time';
+    driver: MotionDriver;
   };
 }
 
@@ -142,30 +187,31 @@ export interface MetricFinding {
   value: string;
 }
 
-export interface CaseStudyStep {
-  summary: string;
-  visuals?: VisualizationBlock[];
-}
-
-export interface ProblemStep extends CaseStudyStep {
+export interface ProblemStep {
   brokenState: string;
+  summary: string;
   constraints: string[];
+  visuals?: VisualBlock[];
 }
 
-export interface ScopeStep extends CaseStudyStep {
+export interface ScopeStep {
   framing: string;
   deliverables: string[];
   seams: string;
+  visuals?: VisualBlock[];
 }
 
-export interface SolutionStep extends CaseStudyStep {
+export interface SolutionStep {
   overview: string;
   mechanics: string;
+  visuals: VisualBlock[];
 }
 
-export interface OutcomeStep extends CaseStudyStep {
+export interface OutcomeStep {
+  summary: string;
   metricsOrFindings: MetricFinding[];
   systemReflection: string;
+  visuals?: VisualBlock[];
 }
 
 export interface ProjectCaseStudy {
@@ -178,7 +224,7 @@ export interface ProjectCaseStudy {
   confidentiality: 'public' | 'nda-sanitized' | 'unlisted';
   tagHierarchy: TagHierarchy;
   executiveHook: ExecutiveHook;
-  heroVisual?: VisualizationBlock;
+  heroVisual?: VisualBlock;
   problem: ProblemStep;
   scope: ScopeStep;
   solution: SolutionStep;

@@ -15,6 +15,7 @@
       --text-subtle: #a1a1aa;
       --accent: #18181b;
       --tag-bg: #f4f4f5;
+      --code-bg: #f8fafc;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
@@ -36,12 +37,12 @@
     }
 
     .container {
-      max-width: 860px;
+      max-width: 880px;
       margin: 0 auto;
     }
 
     header {
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       border-bottom: 1px solid var(--border);
       padding-bottom: 24px;
     }
@@ -56,7 +57,7 @@
     }
 
     h1 {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 600;
       letter-spacing: -0.02em;
       margin-bottom: 8px;
@@ -67,7 +68,6 @@
       font-size: 14px;
     }
 
-    /* Template Card */
     .template-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -102,8 +102,8 @@
     }
 
     .field-slot.visual {
-      background: #fdfdfd;
-      border: 1px solid #d4d4d8;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
     }
 
     .field-label {
@@ -125,7 +125,7 @@
       font-family: var(--font-mono);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin: 28px 0 12px 0;
+      margin: 32px 0 14px 0;
       color: var(--text);
       display: flex;
       align-items: center;
@@ -148,7 +148,7 @@
     .step-card {
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 16px 20px;
+      padding: 18px 20px;
       background: #fff;
     }
 
@@ -157,7 +157,7 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .subfield-list {
@@ -170,7 +170,7 @@
       display: grid;
       grid-template-columns: 140px 1fr;
       font-size: 12px;
-      padding-top: 4px;
+      padding-top: 6px;
       border-top: 1px solid #f4f4f5;
     }
 
@@ -183,7 +183,44 @@
       color: var(--text);
     }
 
-    /* Code View */
+    /* Visual Detail Specs */
+    .visual-anatomy-card {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .format-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .format-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 6px;
+      text-transform: uppercase;
+    }
+
+    .format-table td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 6px;
+      vertical-align: top;
+    }
+
+    .format-code {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #0f172a;
+    }
+
     .code-section {
       margin-top: 40px;
     }
@@ -192,11 +229,11 @@
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 18px;
+      padding: 20px;
       font-family: var(--font-mono);
       font-size: 12px;
       line-height: 1.55;
-      color: #18181b;
+      color: #0f172a;
       overflow-x: auto;
       margin-top: 12px;
     }
@@ -205,9 +242,9 @@
 <body>
   <div class="container">
     <header>
-      <div class="meta-label">Wayfinder Ticket #6 • Case Study Content Schema</div>
-      <h1>Blank Project Template & Visualization Engine</h1>
-      <p class="subtitle">Minimal, light-mode structure supporting dynamic visual formats (video scrubs, WebGL canvases, 3D scenes, and interactive stubs) across all 4 universal beats.</p>
+      <div class="meta-label">Wayfinder Ticket #6 • Content Schema & Visualization System</div>
+      <h1>Project Case Study Schema & Visuals Specification</h1>
+      <p class="subtitle">Detailed breakdown of content slots and the complete anatomy of a <code>visual</code> block across all 4 universal beats.</p>
     </header>
 
     <!-- Visual Template Preview -->
@@ -217,7 +254,7 @@
         <span class="tag">origin: [client | academic | research | speculative | personal]</span>
         <span class="tag">type: [e.g. design-system | field-operations | app-blocker]</span>
         <span class="tag">year: [YYYY]</span>
-        <span class="tag">role: [Your role]</span>
+        <span class="tag">role: [Your role on project]</span>
       </div>
 
       <!-- Title & Tagline -->
@@ -235,7 +272,7 @@
       <div class="field-slot" style="background: #f4f4f5; border-style: solid;">
         <span class="field-label">executive hook (for technical founders & engineering leads)</span>
         <div class="field-hint">
-          <strong>What this proves:</strong> [1-2 sentences on the architectural takeaway, systems resilience, or behavioral mechanism]<br>
+          <strong>What this proves:</strong> [1-2 sentences on systems/engineering takeaway]<br>
           <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 4px; display: inline-block;">Primary proof or metric: [e.g. -42% turnaround, zero validation errors, or user study finding]</span>
         </div>
       </div>
@@ -244,13 +281,12 @@
       <div class="field-slot visual">
         <span class="field-label">hero visual (top anchor)</span>
         <div class="field-hint">
-          <strong>Format:</strong> [static-frame | video-scrub | interactive-canvas | 3d-model | explainer-figure | prototype-embed]<br>
-          <span style="font-size: 12px; color: var(--text-muted);">Immediate visual payoff (e.g. Dhyan physical token lockscreen, Preservation of Humans 3D sphere, or Audri dual-pane overview).</span>
+          <strong>Full visual block:</strong> Immediate high-impact payoff (e.g. Dhyan physical QR token + lockscreen, Preservation of Humans 3D celestial sphere, or Audri dual-pane overview).
         </div>
       </div>
 
       <!-- Universal 4 Steps -->
-      <div class="section-title">The 4 Universal Case Study Beats</div>
+      <div class="section-title">The 4 Universal Case Study Beats & Visual Attachment</div>
 
       <div class="four-step-grid">
         <!-- Beat 1 -->
@@ -269,9 +305,11 @@
               <span class="subfield-key">constraints</span>
               <span class="subfield-desc">List of real constraints (offline-first, zero errors, performance budget).</span>
             </div>
-            <div class="subfield-item">
-              <span class="subfield-key">visuals[]</span>
-              <span class="subfield-desc">Optional visual blocks (e.g. screenshot of problem loop, breakdown photo).</span>
+            <div class="subfield-item" style="background: #fcfcfc;">
+              <span class="subfield-key" style="color: #0f172a; font-weight: 600;">visuals[]</span>
+              <span class="subfield-desc">
+                <strong>Visual evidence of the problem:</strong> e.g. screenshot of the addictive screen time loop in Dhyan, photo of messy paper survey records in NFHS, or confusing legacy clinical tool in Audri.
+              </span>
             </div>
           </div>
         </div>
@@ -286,15 +324,17 @@
             </div>
             <div class="subfield-item">
               <span class="subfield-key">deliverables</span>
-              <span class="subfield-desc">List of tangible outputs produced (components, state machines, prototypes).</span>
+              <span class="subfield-desc">List of tangible outputs produced (components, state machines, hardware tokens).</span>
             </div>
             <div class="subfield-item">
               <span class="subfield-key">seams</span>
               <span class="subfield-desc">What was explicitly out of scope (e.g. backend integration handled by partner).</span>
             </div>
-            <div class="subfield-item">
-              <span class="subfield-key">visuals[]</span>
-              <span class="subfield-desc">Optional system diagram, architecture map, or boundary flow.</span>
+            <div class="subfield-item" style="background: #fcfcfc;">
+              <span class="subfield-key" style="color: #0f172a; font-weight: 600;">visuals[]</span>
+              <span class="subfield-desc">
+                <strong>Architectural boundary map:</strong> e.g. system topology diagram, information architecture map, or state machine schematic showing what is inside vs outside the design seam.
+              </span>
             </div>
           </div>
         </div>
@@ -311,9 +351,11 @@
               <span class="subfield-key">mechanics</span>
               <span class="subfield-desc">Key interactions, friction points, or state handling mechanics.</span>
             </div>
-            <div class="subfield-item">
-              <span class="subfield-key">visuals[]</span>
-              <span class="subfield-desc">Core interface visual choreography (interactive sliders, WebGL, video walkthroughs).</span>
+            <div class="subfield-item" style="background: #fcfcfc;">
+              <span class="subfield-key" style="color: #0f172a; font-weight: 600;">visuals[]</span>
+              <span class="subfield-desc">
+                <strong>The core interface choreography:</strong> Interactive sandboxes, scrubbed video walkthroughs, high-res UI flow carousels, or tactile friction sliders showing the system running.
+              </span>
             </div>
           </div>
         </div>
@@ -334,12 +376,100 @@
               <span class="subfield-key">reflection</span>
               <span class="subfield-desc">One sentence on what this taught you about this class of system.</span>
             </div>
-            <div class="subfield-item">
-              <span class="subfield-key">visuals[]</span>
-              <span class="subfield-desc">Optional real deployment photo, device in hand, or verification log.</span>
+            <div class="subfield-item" style="background: #fcfcfc;">
+              <span class="subfield-key" style="color: #0f172a; font-weight: 600;">visuals[]</span>
+              <span class="subfield-desc">
+                <strong>Real-world proof & deployment artifacts:</strong> Photo of the printed QR key in a physical room, screenshot of verified local device logs, or field survey in enumerator hands.
+              </span>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Visual Anatomy Deep Dive -->
+      <div class="visual-anatomy-card">
+        <div class="meta-label">Detailed Specification</div>
+        <h3 style="font-size: 15px; margin-bottom: 8px;">What Exactly a <code>visual</code> Block Entails</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          Every item in <code>visuals[]</code> (and <code>heroVisual</code>) is a structured object with 7 explicit properties:
+        </p>
+
+        <table class="format-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type / Options</th>
+              <th>Description & Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="format-code">format</td>
+              <td>
+                <code>static-frame</code><br>
+                <code>video-scrub</code><br>
+                <code>interactive-canvas</code><br>
+                <code>3d-model</code><br>
+                <code>explainer-figure</code><br>
+                <code>prototype-embed</code>
+              </td>
+              <td>
+                <strong>The execution medium:</strong><br>
+                • <code>static-frame</code>: High-res retina image / poster frame.<br>
+                • <code>video-scrub</code>: Inline video whose timeline scrubs on scroll or plays on viewport enter.<br>
+                • <code>interactive-canvas</code>: Procedural WebGL shader or interactive React canvas.<br>
+                • <code>3d-model</code>: Three.js/OGL scene with orbital or scroll-linked rotation.<br>
+                • <code>explainer-figure</code>: Isometric or exploded system architecture flow.<br>
+                • <code>prototype-embed</code>: Sandboxed live UI micro-component or interactive stub.
+              </td>
+            </tr>
+            <tr>
+              <td class="format-code">src</td>
+              <td>string</td>
+              <td>
+                Asset file path (e.g. <code>/assets/dhyan/token-hero.webp</code>), video URL (H.264/WebM), 3D asset (<code>.glb</code>), or registered React/Astro component name (e.g. <code>DhyanFrictionSimulator</code>).
+              </td>
+            </tr>
+            <tr>
+              <td class="format-code">aspectRatio</td>
+              <td><code>16/9</code> | <code>21/9</code> | <code>4/3</code> | <code>1/1</code> | <code>fullscreen</code></td>
+              <td>Controls layout container sizing and prevents cumulative layout shift (CLS).</td>
+            </tr>
+            <tr>
+              <td class="format-code">caption</td>
+              <td>string</td>
+              <td>Editorial caption underneath the visual explaining the systems significance of what is shown.</td>
+            </tr>
+            <tr>
+              <td class="format-code">alt</td>
+              <td>string</td>
+              <td>Accessible plain-text description for screen-readers and SEO.</td>
+            </tr>
+            <tr>
+              <td class="format-code">motion.behavior</td>
+              <td>
+                <code>pinned-scrub</code><br>
+                <code>idle-loop</code><br>
+                <code>hover-reveal</code><br>
+                <code>user-driven</code><br>
+                <code>static</code>
+              </td>
+              <td>
+                <strong>How the visual animates:</strong><br>
+                • <code>pinned-scrub</code>: Scroll locks the viewport and scrubs the visual timeline.<br>
+                • <code>idle-loop</code>: Subtle continuous breathing motion at rest.<br>
+                • <code>hover-reveal</code>: Expands details or highlights data under cursor.<br>
+                • <code>user-driven</code>: Direct interactive canvas (visitor clicks/drags).<br>
+                • <code>static</code>: Traditional motionless display.
+              </td>
+            </tr>
+            <tr>
+              <td class="format-code">motion.driver</td>
+              <td><code>scroll</code> | <code>pointer</code> | <code>time</code></td>
+              <td>The clock or input controlling the animation (scroll position, mouse cursor, or GSAP ticker).</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -357,44 +487,82 @@ confidentiality: "public" # public | nda-sanitized | unlisted
 
 tagHierarchy:
   origin: "" # client | academic | research | speculative | personal
-  projectType: "" # e.g. design-system | field-operations | tangible-friction
+  projectType: "" # e.g. design-system | field-operations | tangible-friction | app-blocker
   identifier: "" # short project slug
 
 executiveHook:
   hookText: "What this proves: [1-2 sentences on systems/engineering takeaway]"
   primaryMetricOrProof: "" # e.g. "-42% turnaround" or "Zero cascading errors"
 
+# Dedicated Hero Visual (Top Anchor)
 heroVisual:
   format: "static-frame" # static-frame | video-scrub | interactive-canvas | 3d-model | explainer-figure | prototype-embed
-  src: ""
-  aspectRatio: "16/9"
+  src: "" # asset path, video file, or component identifier
+  aspectRatio: "16/9" # 16/9 | 21/9 | 4/3 | 1/1 | fullscreen
   caption: ""
+  alt: ""
+  motion:
+    behavior: "pinned-scrub" # pinned-scrub | idle-loop | hover-reveal | user-driven | static
+    driver: "scroll" # scroll | pointer | time
 
+# 1. Problem / Idea
 problem:
   brokenState: ""
   summary: ""
   constraints: []
-  visuals: []
+  visuals: # Visual evidence of the broken state / baseline
+    - format: "static-frame"
+      src: ""
+      aspectRatio: "16/9"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "static"
+        driver: "time"
 
+# 2. Plan & Scope
 scope:
   framing: ""
   deliverables: []
   seams: ""
-  visuals: []
+  visuals: # Architectural boundary map or system topology
+    - format: "explainer-figure"
+      src: ""
+      aspectRatio: "16/9"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "hover-reveal"
+        driver: "pointer"
 
+# 3. Design & System
 solution:
   overview: ""
   mechanics: ""
-  visuals:
+  visuals: # Core interface choreography / interactive prototype
     - format: "video-scrub"
       src: ""
+      aspectRatio: "16/9"
       caption: ""
+      alt: ""
+      motion:
+        behavior: "pinned-scrub"
+        driver: "scroll"
 
+# 4. Outcome & Learnings
 outcome:
   summary: ""
   metricsOrFindings: []
   systemReflection: ""
-  visuals: []
+  visuals: # Real deployment proof / device in hand
+    - format: "static-frame"
+      src: ""
+      aspectRatio: "4/3"
+      caption: ""
+      alt: ""
+      motion:
+        behavior: "static"
+        driver: "time"
 ---</code></pre>
     </div>
   </div>
