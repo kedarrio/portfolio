@@ -8,6 +8,15 @@ Canonical terminology and mental models for Kedar Mulay's portfolio redesign and
 The core design and communication principle: explaining complex systems, backend architectures, and research ideas in plain, neutral, grounded language so that anyone immediately understands them without buzzwords or academic jargon.
 _Avoid_: Intellectual jargon, Pretentious design speak, Buzzword salad
 
+**Linguistic Guardrails (Banned vs Preferred Vocabulary)**:
+Strict language constraints to eliminate academic reflex and agency puffery:
+- _Banned / Avoid_: Speculative fabulation, critical design inquiry, phenomenological, epistemological, heuristic evaluation matrix, holistic paradigm, synergistic, student thesis, conceptual exploration, pedagogical.
+- _Preferred_: What was broken, how it works, intentional friction, transaction anxiety, error-handling, field operations, real user failure modes, state management, cognitive intuition, applied R&D.
+
+**Applied R&D Stance**:
+The perspective used for academic, speculative, and research projects: treating them as rigorous, applied systems R&D, intentional behavioral friction studies, or operational data architecture rather than abstract art or school assignments.
+_Avoid_: Academic disclaimers, Defensive explanations ("This was a student project but..."), Theoretical navel-gazing
+
 **Universal Case Study Flow**:
 The consistent 4-step narrative structure applied to all projects:
 1. **Problem / Idea**: What was broken or what question was being explored.
@@ -26,6 +35,13 @@ _Avoid_: Clunky separate sub-pages, Rigid academic partitions
 The structured metadata model defining project context:
 `[Origin: academic | client | research | speculative] / [Project Type] / [Project Name]`.
 _Avoid_: Flat uninformative tags, Inconsistent taxonomy
+
+**Commercial Translation Delivery Framework**:
+The unified three-tier presentation model for academic, research, and speculative work:
+1. **Subtle Context Tag**: Identifies origin (`origin: academic` | `research` | `speculative`) without dominating the card.
+2. **Integrated Webscroll Executive Hook**: A bespoke, non-generic proof-point or visual callout in the webscroll flow highlighting the systems takeaway ("What this proves to an engineering/product team").
+3. **Applied R&D Narrative**: The project body simply presents the problem, systems architecture, and outcomes as an applied R&D inquiry from line one, avoiding defensive explanations or academic framing.
+_Avoid_: Clunky disclaimer boxes, Defensive justification text, Generic boilerplate callouts
 
 ## Verified Project Roster
 

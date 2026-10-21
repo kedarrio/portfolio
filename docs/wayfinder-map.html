@@ -125,7 +125,7 @@
     }
 
     .progress-fill {
-      width: 44.4%;
+      width: 55.5%;
       height: 100%;
       background: linear-gradient(90deg, #22c55e 0%, #38bdf8 100%);
       border-radius: 9999px;
@@ -389,7 +389,7 @@
     <div class="progress-section">
       <div class="progress-meta">
         <span>Map Progress (Decisions Settled)</span>
-        <span>4 of 9 Tickets Closed (44%)</span>
+        <span>5 of 9 Tickets Closed (56%)</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill"></div>
@@ -422,7 +422,7 @@
         <!-- #5 -> #10 -->
         <path d="M 480 120 L 480 180" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
         <!-- #5 -> #4 -->
-        <path d="M 550 65 L 610 50" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
+        <path d="M 550 65 L 610 50" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)" />
         <!-- #5 -> #6 -->
         <path d="M 550 80 L 610 110" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-active)" />
         <!-- #5 -> #7 -->
@@ -473,10 +473,10 @@
           <text x="12" y="58" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="10">HITL Task Ticket</text>
         </g>
 
-        <!-- #4 Frontier Grilling -->
+        <!-- #4 Closed Grilling -->
         <g transform="translate(610, 20)">
-          <rect width="140" height="60" rx="8" fill="#0d1c28" stroke="#38bdf8" stroke-width="2"/>
-          <text x="12" y="22" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#4 TRANSLATION</text>
+          <rect width="140" height="60" rx="8" fill="#13231a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="12" y="22" fill="#22c55e" font-family="ui-monospace, monospace" font-size="11" font-weight="bold">#4 TRANSLATION</text>
           <text x="12" y="40" fill="#e2e8f0" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold">Academic Reframe</text>
           <text x="12" y="52" fill="#8492a6" font-family="-apple-system, sans-serif" font-size="9">Commercial buyers</text>
         </g>
@@ -523,7 +523,7 @@
       <div class="column col-closed">
         <div class="column-header">
           <span class="column-title">✅ Decisions Locked</span>
-          <span class="column-count">4</span>
+          <span class="column-count">5</span>
         </div>
 
         <a href="https://github.com/kedarrio/portfolio/issues/2" target="_blank" class="card status-closed">
@@ -561,13 +561,22 @@
           <div class="ticket-title">Project Archive Audit & Launch Lineup</div>
           <div class="ticket-summary">Unified Selected Work layout, 2-layer tags (<code>[origin]/[type]/[name]</code>), universal 4-part case study flow, and raw dump folder.</div>
         </a>
+
+        <a href="https://github.com/kedarrio/portfolio/issues/4" target="_blank" class="card status-closed">
+          <div class="card-top">
+            <span class="ticket-id">#4 • GRILLING</span>
+            <span class="ticket-badge badge-closed">Closed</span>
+          </div>
+          <div class="ticket-title">Academic-to-Commercial Translation</div>
+          <div class="ticket-summary">Hybrid delivery model (subtle origin tag + webscroll executive hook + pure applied R&D narrative) and strict linguistic guardrails in GLOSSARY.md.</div>
+        </a>
       </div>
 
       <!-- Frontier Column -->
       <div class="column col-frontier">
         <div class="column-header">
           <span class="column-title">⚡ Active Frontier</span>
-          <span class="column-count">4</span>
+          <span class="column-count">3</span>
         </div>
 
         <a href="https://github.com/kedarrio/portfolio/issues/10" target="_blank" class="card status-frontier">
@@ -577,15 +586,6 @@
           </div>
           <div class="ticket-title">Ingest Raw Project Archive</div>
           <div class="ticket-summary">Dump raw PDFs, screenshots, and export folders into <code>docs/raw-projects-dump/</code> at your own pace to build the master inventory.</div>
-        </a>
-
-        <a href="https://github.com/kedarrio/portfolio/issues/4" target="_blank" class="card status-frontier">
-          <div class="card-top">
-            <span class="ticket-id">#4 • GRILLING</span>
-            <span class="ticket-badge badge-frontier">Unblocked</span>
-          </div>
-          <div class="ticket-title">Academic-to-Commercial Translation</div>
-          <div class="ticket-summary">Reframing academic & experimental projects (Melting Rupee, NFHS survey, Upside Down) so commercial buyers instantly get the value.</div>
         </a>
 
         <a href="https://github.com/kedarrio/portfolio/issues/6" target="_blank" class="card status-frontier">
@@ -650,7 +650,7 @@
     </div>
 
     <footer>
-      Wayfinder Map • Project: kedarrio/portfolio • Updated automatically after Ticket #5 Resolution
+      Wayfinder Map • Project: kedarrio/portfolio • Updated automatically after Ticket #4 Resolution
     </footer>
   </div>
 </body>
