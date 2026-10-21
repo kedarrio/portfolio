@@ -43,6 +43,10 @@ The unified three-tier presentation model for academic, research, and speculativ
 3. **Applied R&D Narrative**: The project body simply presents the problem, systems architecture, and outcomes as an applied R&D inquiry from line one, avoiding defensive explanations or academic framing.
 _Avoid_: Clunky disclaimer boxes, Defensive justification text, Generic boilerplate callouts
 
+**Unified Case Study Content Schema & Visualization System**:
+The canonical data contract and media specification defining every project on the site (documented in `docs/content-schema.md`). Combines the 4 universal beats (`Problem`, `Scope`, `Design & System`, `Outcome`) with a dedicated top-level `heroVisual` and flexible, multi-format `visuals` blocks (`static-frame`, `video-scrub`, `interactive-canvas`, `3d-model`, `explainer-figure`, `prototype-embed`) in any step.
+_Avoid_: Static-image-only layouts, Inflexible CMS templates, Inconsistent section hierarchies
+
 ## Verified Project Roster
 
 **Commercial Systems & Workflows**:
