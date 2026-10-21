@@ -15,19 +15,19 @@
       --text-dim: #94a3b8;
       
       --accent: #0f172a;
-      --accent-blue: #2563eb;
-      
-      --success: #15803d;
-      --success-bg: #f0fdf4;
-      --success-border: #bbf7d0;
 
-      --frontier: #1d4ed8;
-      --frontier-bg: #eff6ff;
-      --frontier-border: #bfdbfe;
+      /* Soft Pastel Colors */
+      --pastel-green-bg: #f0fdf4;
+      --pastel-green-border: #bbf7d0;
+      --pastel-green-text: #166534;
 
-      --blocked: #64748b;
-      --blocked-bg: #f8fafc;
-      --blocked-border: #e2e8f0;
+      --pastel-blue-bg: #f0f9ff;
+      --pastel-blue-border: #bae6fd;
+      --pastel-blue-text: #0369a1;
+
+      --pastel-gray-bg: #f8fafc;
+      --pastel-gray-border: #e2e8f0;
+      --pastel-gray-text: #64748b;
 
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -82,7 +82,6 @@
     .destination-panel {
       background: var(--surface);
       border: 1px solid var(--surface-border);
-      border-left: 3px solid #0f172a;
       border-radius: 6px;
       padding: 16px 20px;
       margin-top: 16px;
@@ -94,7 +93,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
+      color: var(--text-dim);
       margin-bottom: 4px;
     }
 
@@ -144,11 +143,11 @@
 
     /* Flowchart Canvas */
     .section-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text);
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -166,7 +165,7 @@
 
     svg.chart {
       width: 100%;
-      min-width: 860px;
+      min-width: 900px;
       height: auto;
       display: block;
     }
@@ -216,43 +215,33 @@
       color: #475569;
     }
 
-    /* Cards */
+    /* Cards - Uniform 1px border, NO ACCENT BARS */
     .card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       text-decoration: none;
       color: inherit;
       display: block;
-      transition: all 0.15s ease-in-out;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .card:hover {
-      border-color: #0f172a;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transform: translateY(-1px);
-    }
-
-    .card.status-closed {
-      border-left: 3px solid var(--success);
-    }
-
-    .card.status-frontier {
-      border-left: 3px solid var(--frontier);
-      background: #fafcff;
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .card.status-blocked {
-      border-left: 3px solid #cbd5e1;
-      opacity: 0.85;
+      background: #fafafa;
+      border-style: dashed;
     }
 
     .card-meta-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .ticket-id {
@@ -262,32 +251,33 @@
       color: var(--text-dim);
     }
 
+    /* Soft Pastel Badges */
     .ticket-badge {
       font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
     }
 
     .badge-closed {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid var(--success-border);
+      background: var(--pastel-green-bg);
+      color: var(--pastel-green-text);
+      border: 1px solid var(--pastel-green-border);
     }
 
     .badge-frontier {
-      background: var(--frontier-bg);
-      color: var(--frontier);
-      border: 1px solid var(--frontier-border);
+      background: var(--pastel-blue-bg);
+      color: var(--pastel-blue-text);
+      border: 1px solid var(--pastel-blue-border);
     }
 
     .badge-blocked {
-      background: var(--blocked-bg);
-      color: var(--blocked);
-      border: 1px solid var(--blocked-border);
+      background: var(--pastel-gray-bg);
+      color: var(--pastel-gray-text);
+      border: 1px solid var(--pastel-gray-border);
     }
 
     .ticket-title {
@@ -295,11 +285,11 @@
       font-weight: 600;
       color: #0f172a;
       line-height: 1.4;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .ticket-summary {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -314,7 +304,7 @@
     }
 
     .unlocked-tag {
-      margin-top: 8px;
+      margin-top: 10px;
       font-family: var(--font-mono);
       font-size: 11px;
       color: #6366f1;
@@ -343,8 +333,8 @@
       margin-bottom: 12px;
     }
 
-    .ledger-panel.fog h3 { color: #d97706; }
-    .ledger-panel.out h3 { color: #dc2626; }
+    .ledger-panel.fog h3 { color: #b45309; }
+    .ledger-panel.out h3 { color: #b91c1c; }
 
     .ledger-list {
       list-style: none;
@@ -414,121 +404,121 @@
     </div>
     
     <div class="flowchart-wrapper">
-      <svg class="chart" viewBox="0 0 940 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="chart" viewBox="0 0 980 380" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+          <marker id="arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#cbd5e1" />
           </marker>
-          <marker id="arrow-closed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#16a34a" />
+          <marker id="arrow-closed" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#86efac" />
           </marker>
-          <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+          <marker id="arrow-active" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#93c5fd" />
           </marker>
         </defs>
 
-        <!-- Connecting Lines -->
-        <path d="M 170 81 L 220 81" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 290 117 L 290 180" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 360 81 L 410 81" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 480 117 L 480 180" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 550 65 L 610 52" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 550 81 L 610 120" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 550 97 L 610 185" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-closed)" />
-        <path d="M 680 162 L 680 176" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 3" />
-        <path d="M 750 205 L 800 205" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow-active)" />
+        <!-- Connecting Lines: Thin 1.2px pastel hairline rules -->
+        <path d="M 170 73 L 220 73" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 290 106 L 290 175" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 360 73 L 410 73" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 480 106 L 480 175" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 550 58 L 605 52" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 550 73 L 605 160" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 550 88 L 605 270" stroke="#86efac" stroke-width="1.2" marker-end="url(#arrow-closed)" />
+        <path d="M 677 206 L 677 255" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="3 3" />
+        <path d="M 750 288 L 805 288" stroke="#93c5fd" stroke-width="1.2" marker-end="url(#arrow-active)" />
 
         <!-- Nodes -->
         
         <!-- #2 CLOSED -->
-        <g transform="translate(30, 45)">
-          <rect width="140" height="72" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#f0fdf4"/>
-          <text x="10" y="14" fill="#15803d" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#2 // BENCHMARKS</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">3-Tier Taxonomy</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Dual-Anchor Model</text>
+        <g transform="translate(30, 40)">
+          <rect width="140" height="66" rx="6" fill="#f4fbf7" stroke="#bbf7d0" stroke-width="1" />
+          <rect x="1" y="1" width="138" height="18" rx="5" fill="#e6f7ee"/>
+          <text x="10" y="13" fill="#15803d" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#2 // BENCHMARKS</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">3-Tier Taxonomy</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Dual-Anchor Model</text>
           
         </g>
         <!-- #3 CLOSED -->
-        <g transform="translate(220, 45)">
-          <rect width="140" height="72" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#f0fdf4"/>
-          <text x="10" y="14" fill="#15803d" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#3 // POSITIONING</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Systems & Interaction</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Design Partner</text>
+        <g transform="translate(220, 40)">
+          <rect width="140" height="66" rx="6" fill="#f4fbf7" stroke="#bbf7d0" stroke-width="1" />
+          <rect x="1" y="1" width="138" height="18" rx="5" fill="#e6f7ee"/>
+          <text x="10" y="13" fill="#15803d" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#3 // POSITIONING</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Systems & Interaction</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Design Partner</text>
           
         </g>
         <!-- #4 CLOSED -->
-        <g transform="translate(610, 20)">
-          <rect width="140" height="64" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#f0fdf4"/>
-          <text x="10" y="14" fill="#15803d" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#4 // TRANSLATION</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Academic Reframe</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Applied R&D Stance</text>
+        <g transform="translate(605, 25)">
+          <rect width="145" height="66" rx="6" fill="#f4fbf7" stroke="#bbf7d0" stroke-width="1" />
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#e6f7ee"/>
+          <text x="10" y="13" fill="#15803d" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#4 // TRANSLATION</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Academic Reframe</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Applied R&D Stance</text>
           
         </g>
         <!-- #5 CLOSED -->
-        <g transform="translate(410, 45)">
-          <rect width="140" height="72" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#f0fdf4"/>
-          <text x="10" y="14" fill="#15803d" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#5 // ARCHIVE AUDIT</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Unified Showcase</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">2-Layer Tags & Flow</text>
+        <g transform="translate(410, 40)">
+          <rect width="140" height="66" rx="6" fill="#f4fbf7" stroke="#bbf7d0" stroke-width="1" />
+          <rect x="1" y="1" width="138" height="18" rx="5" fill="#e6f7ee"/>
+          <text x="10" y="13" fill="#15803d" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#5 // ARCHIVE AUDIT</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Unified Showcase</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">2-Layer Tags & Flow</text>
           
         </g>
         <!-- #6 FRONTIER -->
-        <g transform="translate(610, 98)">
-          <rect width="140" height="64" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#eff6ff"/>
-          <text x="10" y="14" fill="#1d4ed8" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#6 // CONTENT SCHEMA</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Universal 4-Part</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Content data model</text>
+        <g transform="translate(605, 140)">
+          <rect width="145" height="66" rx="6" fill="#f6f9fe" stroke="#bfdbfe" stroke-width="1" />
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#e0f2fe"/>
+          <text x="10" y="13" fill="#0369a1" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#6 // CONTENT SCHEMA</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Universal 4-Part</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Content data model</text>
           
         </g>
         <!-- #7 FRONTIER -->
-        <g transform="translate(610, 176)">
-          <rect width="140" height="64" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#eff6ff"/>
-          <text x="10" y="14" fill="#1d4ed8" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#7 // HOMEPAGE FLOW</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Scroll Narrative</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Section architecture</text>
+        <g transform="translate(605, 255)">
+          <rect width="145" height="66" rx="6" fill="#f6f9fe" stroke="#bfdbfe" stroke-width="1" />
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#e0f2fe"/>
+          <text x="10" y="13" fill="#0369a1" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#7 // HOMEPAGE FLOW</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Scroll Narrative</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Section architecture</text>
           
         </g>
         <!-- #8 BLOCKED -->
-        <g transform="translate(800, 164)">
-          <rect width="125" height="84" rx="6" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 3"/>
-          <rect x="1" y="1" width="123" height="20" rx="5" fill="#f1f5f9"/>
-          <text x="10" y="14" fill="#64748b" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#8 // DESIGN TOKENS</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">DESIGN.md</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Visual tokens, lines,</text>
-          <text x="12" y="70" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="9">WebGL & Audio</text>
+        <g transform="translate(805, 255)">
+          <rect width="145" height="78" rx="6" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#f1f5f9"/>
+          <text x="10" y="13" fill="#64748b" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#8 // DESIGN TOKENS</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">DESIGN.md</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Visual tokens, lines,</text>
+          <text x="12" y="66" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="9">WebGL & Audio</text>
         </g>
         <!-- #9 CLOSED -->
-        <g transform="translate(220, 180)">
-          <rect width="140" height="72" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#f0fdf4"/>
-          <text x="10" y="14" fill="#15803d" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#9 // AI MARKET</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Context Design</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Workbenches vs Chat</text>
+        <g transform="translate(220, 175)">
+          <rect width="140" height="66" rx="6" fill="#f4fbf7" stroke="#bbf7d0" stroke-width="1" />
+          <rect x="1" y="1" width="138" height="18" rx="5" fill="#e6f7ee"/>
+          <text x="10" y="13" fill="#15803d" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#9 // AI MARKET</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Context Design</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">Workbenches vs Chat</text>
           
         </g>
         <!-- #10 FRONTIER -->
-        <g transform="translate(410, 180)">
-          <rect width="140" height="72" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
-          <rect x="1" y="1" width="138" height="20" rx="5" fill="#eff6ff"/>
-          <text x="10" y="14" fill="#1d4ed8" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#10 // RAW DUMP</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Drop PDFs & Media</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">HITL Task Ticket</text>
+        <g transform="translate(410, 175)">
+          <rect width="140" height="66" rx="6" fill="#f6f9fe" stroke="#bfdbfe" stroke-width="1" />
+          <rect x="1" y="1" width="138" height="18" rx="5" fill="#e0f2fe"/>
+          <text x="10" y="13" fill="#0369a1" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#10 // RAW DUMP</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Drop PDFs & Media</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">HITL Task Ticket</text>
           
         </g>
 
-        <!-- Final Destination Target -->
-        <g transform="translate(800, 45)">
-          <rect width="125" height="72" rx="6" fill="#ffffff" stroke="#7e22ce" stroke-width="1.5"/>
-          <rect x="1" y="1" width="123" height="20" rx="5" fill="#faf5ff"/>
-          <text x="10" y="14" fill="#7e22ce" font-family="ui-monospace, monospace" font-size="10" font-weight="700">SPEC // DESTINATION</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Locked Blueprint</text>
-          <text x="12" y="52" fill="#7e22ce" font-family="-apple-system, sans-serif" font-size="10">Ready to Build</text>
+        <!-- Final Destination Target (Soft Pastel Lavender) -->
+        <g transform="translate(805, 25)">
+          <rect width="145" height="66" rx="6" fill="#faf7fd" stroke="#e9d5ff" stroke-width="1"/>
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#f3e8ff"/>
+          <text x="10" y="13" fill="#7e22ce" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700">SPEC // DESTINATION</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Locked Blueprint</text>
+          <text x="12" y="48" fill="#7e22ce" font-family="-apple-system, sans-serif" font-size="10">Ready to Build</text>
         </g>
       </svg>
     </div>
@@ -549,7 +539,7 @@
             <span class="ticket-badge badge-closed">DECIDED</span>
           </div>
           <div class="ticket-title">Top-tier academic-turned-commercial and systems-heavy designer portfolios</div>
-          <div class="ticket-summary">Top-tier academic-turned-commercial and systems-heavy designer portfolios](https://github.com/kedarrio/portfolio/issues/2): Established 3-tier work taxonomy (Systems/Commercial, Speculative Lab, Field Notes/Essays), Dual-Anchor positioning model, and procedural Web Audio/single-canvas WebGL performance envelope.</div>
+          <div class="ticket-summary">Established 3-tier work taxonomy (Systems/Commercial, Speculative Lab, Field Notes/Essays), Dual-Anchor positioning model, and procedural Web Audio/single-canvas WebGL performance envelope.</div>
           
         </a>
         <a href="https://github.com/kedarrio/portfolio/issues/3" target="_blank" class="card status-closed">
@@ -558,7 +548,7 @@
             <span class="ticket-badge badge-closed">DECIDED</span>
           </div>
           <div class="ticket-title">Define commercial target client and primary value proposition</div>
-          <div class="ticket-summary">Define commercial target client and primary value proposition](https://github.com/kedarrio/portfolio/issues/3): Locked title (Systems &amp; Interaction Designer), posture (Design Partner), primary audience (Technical founders &amp; high-ticket global clients), and 4 practice pillars.</div>
+          <div class="ticket-summary">Locked title (Systems &amp; Interaction Designer), posture (Design Partner), primary audience (Technical founders &amp; high-ticket global clients), and 4 practice pillars.</div>
           
         </a>
         <a href="https://github.com/kedarrio/portfolio/issues/4" target="_blank" class="card status-closed">
@@ -567,7 +557,7 @@
             <span class="ticket-badge badge-closed">DECIDED</span>
           </div>
           <div class="ticket-title">Reframing speculative and academic work for commercial buyers</div>
-          <div class="ticket-summary">Reframing speculative and academic work for commercial buyers](https://github.com/kedarrio/portfolio/issues/4): Established hybrid translation delivery model (subtle origin tag + webscroll executive hook + pure applied R&amp;D narrative), defined translation archetypes, deferred granular copy to raw asset ingestion (#10), and codified strict linguistic guardrails in GLOSSARY.md.</div>
+          <div class="ticket-summary">Established hybrid translation delivery model (subtle origin tag + webscroll executive hook + pure applied R&amp;D narrative), defined translation archetypes, deferred granular copy to raw asset ingestion (#10), and codified strict linguistic guardrails in GLOSSARY.md.</div>
           
         </a>
         <a href="https://github.com/kedarrio/portfolio/issues/5" target="_blank" class="card status-closed">
@@ -576,7 +566,7 @@
             <span class="ticket-badge badge-closed">DECIDED</span>
           </div>
           <div class="ticket-title">Curate hero case studies and secondary work</div>
-          <div class="ticket-summary">Curate hero case studies and secondary work](https://github.com/kedarrio/portfolio/issues/5): Established unified Selected Work layout with 2-layer context tags ([origin]/[type]/[name]), locked 10-project candidate roster, set universal 4-part case study flow (Problem → Scope → Design → Outcome), and initialized docs/raw-projects-dump/ for raw asset ingestion.</div>
+          <div class="ticket-summary">Established unified Selected Work layout with 2-layer context tags ([origin]/[type]/[name]), locked 10-project candidate roster, set universal 4-part case study flow (Problem → Scope → Design → Outcome), and initialized docs/raw-projects-dump/ for raw asset ingestion.</div>
           
         </a>
         <a href="https://github.com/kedarrio/portfolio/issues/9" target="_blank" class="card status-closed">
@@ -585,7 +575,7 @@
             <span class="ticket-badge badge-closed">DECIDED</span>
           </div>
           <div class="ticket-title">Market viability &amp; articulation of &#039;Human Experience in AI&#039; and Context Design</div>
-          <div class="ticket-summary">Market viability &amp; articulation of &#039;Human Experience in AI&#039; and Context Design](https://github.com/kedarrio/portfolio/issues/9): Validated commercial viability of Context Design as the core interface bottleneck of AI (moving from conversational chat fatigue to structured workbenches and high-bandwidth human steering).</div>
+          <div class="ticket-summary">Validated commercial viability of Context Design as the core interface bottleneck of AI (moving from conversational chat fatigue to structured workbenches and high-bandwidth human steering).</div>
           
         </a>
       </div>
@@ -669,7 +659,7 @@
     </div>
 
     <footer>
-      WAYFINDER MAP // REPO: kedarrio/portfolio // SYNCED: 2026-10-21 11:46:02 UTC
+      WAYFINDER MAP // REPO: kedarrio/portfolio // SYNCED: 2026-10-21 11:50:35 UTC
     </footer>
   </div>
 </body>

@@ -138,12 +138,18 @@ const decisionsRaw = mapSections['Decisions so far'] || '';
 const fogRaw = mapSections['Not yet specified'] || '';
 const outOfScopeRaw = mapSections['Out of scope'] || '';
 
-// Parse Decisions so far: maps issue number -> one-line summary
+// Parse Decisions so far: maps issue number -> clean one-line summary (without leaking markdown URLs)
 const decisionsMap = {};
 for (const line of decisionsRaw.split('\n')) {
-  const match = line.match(/\[#(\d+)\][^:]*:\s*(.+)$/) || line.match(/#(\d+)[^:]*:\s*(.+)$/);
-  if (match) {
-    decisionsMap[parseInt(match[1], 10)] = match[2].trim();
+  // Matches - [[#2] Title](url): Summary OR - [#2 Title](url): Summary
+  const linkColonMatch = line.match(/#(\d+)[^)]*\):\s*(.+)$/);
+  if (linkColonMatch) {
+    decisionsMap[parseInt(linkColonMatch[1], 10)] = linkColonMatch[2].trim();
+  } else {
+    const fallbackMatch = line.match(/#(\d+)[^:]*:\s*(.+)$/);
+    if (fallbackMatch) {
+      decisionsMap[parseInt(fallbackMatch[1], 10)] = fallbackMatch[2].trim();
+    }
   }
 }
 
@@ -245,61 +251,59 @@ function parseMarkdownListItems(rawListMd) {
 const fogItems = parseMarkdownListItems(fogRaw);
 const outOfScopeItems = parseMarkdownListItems(outOfScopeRaw);
 
-// 6. SVG Flowchart Layout Definition (Light Architectural Mode)
+// 6. SVG Flowchart Layout: Generous Spacing & Soft Pastel Aesthetics
+// Canvas size: 980 x 380
 const SVG_LAYOUT = {
-  2: { x: 30, y: 45, w: 140, h: 72, short: "BENCHMARKS", sub1: "3-Tier Taxonomy", sub2: "Dual-Anchor Model" },
-  3: { x: 220, y: 45, w: 140, h: 72, short: "POSITIONING", sub1: "Systems & Interaction", sub2: "Design Partner" },
-  9: { x: 220, y: 180, w: 140, h: 72, short: "AI MARKET", sub1: "Context Design", sub2: "Workbenches vs Chat" },
-  5: { x: 410, y: 45, w: 140, h: 72, short: "ARCHIVE AUDIT", sub1: "Unified Showcase", sub2: "2-Layer Tags & Flow" },
-  10: { x: 410, y: 180, w: 140, h: 72, short: "RAW DUMP", sub1: "Drop PDFs & Media", sub2: "HITL Task Ticket" },
-  4: { x: 610, y: 20, w: 140, h: 64, short: "TRANSLATION", sub1: "Academic Reframe", sub2: "Applied R&D Stance" },
-  6: { x: 610, y: 98, w: 140, h: 64, short: "CONTENT SCHEMA", sub1: "Universal 4-Part", sub2: "Content data model" },
-  7: { x: 610, y: 176, w: 140, h: 64, short: "HOMEPAGE FLOW", sub1: "Scroll Narrative", sub2: "Section architecture" },
-  8: { x: 800, y: 164, w: 125, h: 84, short: "DESIGN TOKENS", sub1: "DESIGN.md", sub2: "Visual tokens, lines,", sub3: "WebGL & Audio" },
+  2:  { x: 30,  y: 40,  w: 140, h: 66, short: "BENCHMARKS", sub1: "3-Tier Taxonomy", sub2: "Dual-Anchor Model" },
+  3:  { x: 220, y: 40,  w: 140, h: 66, short: "POSITIONING", sub1: "Systems & Interaction", sub2: "Design Partner" },
+  9:  { x: 220, y: 175, w: 140, h: 66, short: "AI MARKET", sub1: "Context Design", sub2: "Workbenches vs Chat" },
+  5:  { x: 410, y: 40,  w: 140, h: 66, short: "ARCHIVE AUDIT", sub1: "Unified Showcase", sub2: "2-Layer Tags & Flow" },
+  10: { x: 410, y: 175, w: 140, h: 66, short: "RAW DUMP", sub1: "Drop PDFs & Media", sub2: "HITL Task Ticket" },
+  4:  { x: 605, y: 25,  w: 145, h: 66, short: "TRANSLATION", sub1: "Academic Reframe", sub2: "Applied R&D Stance" },
+  6:  { x: 605, y: 140, w: 145, h: 66, short: "CONTENT SCHEMA", sub1: "Universal 4-Part", sub2: "Content data model" },
+  7:  { x: 605, y: 255, w: 145, h: 66, short: "HOMEPAGE FLOW", sub1: "Scroll Narrative", sub2: "Section architecture" },
+  8:  { x: 805, y: 255, w: 145, h: 78, short: "DESIGN TOKENS", sub1: "DESIGN.md", sub2: "Visual tokens, lines,", sub3: "WebGL & Audio" },
 };
 
 function renderSvgNode(ticket) {
   const cfg = SVG_LAYOUT[ticket.number];
   if (!cfg) return '';
 
+  // Soft pastel colors, 1px thin border
   let rectFill = '#ffffff';
   let rectStroke = '#e2e8f0';
-  let strokeWidth = '1';
   let strokeDash = '';
   let badgeColor = '#64748b';
-  let badgeBg = '#f1f5f9';
+  let badgeBg = '#f8fafc';
 
   if (ticket.status === 'closed') {
-    rectFill = '#ffffff';
-    rectStroke = '#16a34a';
-    strokeWidth = '1.5';
+    rectFill = '#f4fbf7';
+    rectStroke = '#bbf7d0';
     badgeColor = '#15803d';
-    badgeBg = '#f0fdf4';
+    badgeBg = '#e6f7ee';
   } else if (ticket.status === 'frontier') {
-    rectFill = '#ffffff';
-    rectStroke = '#2563eb';
-    strokeWidth = '2';
-    badgeColor = '#1d4ed8';
-    badgeBg = '#eff6ff';
+    rectFill = '#f6f9fe';
+    rectStroke = '#bfdbfe';
+    badgeColor = '#0369a1';
+    badgeBg = '#e0f2fe';
   } else if (ticket.status === 'blocked') {
     rectFill = '#fafafa';
     rectStroke = '#cbd5e1';
-    strokeWidth = '1';
-    strokeDash = 'stroke-dasharray="4 3"';
+    strokeDash = 'stroke-dasharray="3 3"';
     badgeColor = '#64748b';
     badgeBg = '#f1f5f9';
   }
 
-  const sub3Text = cfg.sub3 ? `<text x="12" y="70" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="9">${cfg.sub3}</text>` : '';
+  const sub3Text = cfg.sub3 ? `<text x="12" y="66" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="9">${cfg.sub3}</text>` : '';
 
   return `
         <!-- #${ticket.number} ${ticket.status.toUpperCase()} -->
         <g transform="translate(${cfg.x}, ${cfg.y})">
-          <rect width="${cfg.w}" height="${cfg.h}" rx="6" fill="${rectFill}" stroke="${rectStroke}" stroke-width="${strokeWidth}" ${strokeDash}/>
-          <rect x="1" y="1" width="${cfg.w - 2}" height="20" rx="5" fill="${badgeBg}"/>
-          <text x="10" y="14" fill="${badgeColor}" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="0.04em">#${ticket.number} // ${cfg.short}</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">${cfg.sub1}</text>
-          <text x="12" y="52" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">${cfg.sub2}</text>
+          <rect width="${cfg.w}" height="${cfg.h}" rx="6" fill="${rectFill}" stroke="${rectStroke}" stroke-width="1" ${strokeDash}/>
+          <rect x="1" y="1" width="${cfg.w - 2}" height="18" rx="5" fill="${badgeBg}"/>
+          <text x="10" y="13" fill="${badgeColor}" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" letter-spacing="0.04em">#${ticket.number} // ${cfg.short}</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">${cfg.sub1}</text>
+          <text x="12" y="48" fill="#64748b" font-family="-apple-system, sans-serif" font-size="10">${cfg.sub2}</text>
           ${sub3Text}
         </g>`;
 }
@@ -307,8 +311,8 @@ function renderSvgNode(ticket) {
 function getLineStyle(sourceTicketNumber) {
   const source = processedTickets.find(t => t.number === sourceTicketNumber);
   if (!source) return { color: '#cbd5e1', marker: 'url(#arrow)' };
-  if (source.status === 'closed') return { color: '#16a34a', marker: 'url(#arrow-closed)' };
-  if (source.status === 'frontier') return { color: '#2563eb', marker: 'url(#arrow-active)' };
+  if (source.status === 'closed') return { color: '#86efac', marker: 'url(#arrow-closed)' };
+  if (source.status === 'frontier') return { color: '#93c5fd', marker: 'url(#arrow-active)' };
   return { color: '#cbd5e1', marker: 'url(#arrow)' };
 }
 
@@ -366,19 +370,19 @@ const generatedHtml = `<!DOCTYPE html>
       --text-dim: #94a3b8;
       
       --accent: #0f172a;
-      --accent-blue: #2563eb;
-      
-      --success: #15803d;
-      --success-bg: #f0fdf4;
-      --success-border: #bbf7d0;
 
-      --frontier: #1d4ed8;
-      --frontier-bg: #eff6ff;
-      --frontier-border: #bfdbfe;
+      /* Soft Pastel Colors */
+      --pastel-green-bg: #f0fdf4;
+      --pastel-green-border: #bbf7d0;
+      --pastel-green-text: #166534;
 
-      --blocked: #64748b;
-      --blocked-bg: #f8fafc;
-      --blocked-border: #e2e8f0;
+      --pastel-blue-bg: #f0f9ff;
+      --pastel-blue-border: #bae6fd;
+      --pastel-blue-text: #0369a1;
+
+      --pastel-gray-bg: #f8fafc;
+      --pastel-gray-border: #e2e8f0;
+      --pastel-gray-text: #64748b;
 
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -433,7 +437,6 @@ const generatedHtml = `<!DOCTYPE html>
     .destination-panel {
       background: var(--surface);
       border: 1px solid var(--surface-border);
-      border-left: 3px solid #0f172a;
       border-radius: 6px;
       padding: 16px 20px;
       margin-top: 16px;
@@ -445,7 +448,7 @@ const generatedHtml = `<!DOCTYPE html>
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
+      color: var(--text-dim);
       margin-bottom: 4px;
     }
 
@@ -495,11 +498,11 @@ const generatedHtml = `<!DOCTYPE html>
 
     /* Flowchart Canvas */
     .section-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text);
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -517,7 +520,7 @@ const generatedHtml = `<!DOCTYPE html>
 
     svg.chart {
       width: 100%;
-      min-width: 860px;
+      min-width: 900px;
       height: auto;
       display: block;
     }
@@ -567,43 +570,33 @@ const generatedHtml = `<!DOCTYPE html>
       color: #475569;
     }
 
-    /* Cards */
+    /* Cards - Uniform 1px border, NO ACCENT BARS */
     .card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       text-decoration: none;
       color: inherit;
       display: block;
-      transition: all 0.15s ease-in-out;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .card:hover {
-      border-color: #0f172a;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transform: translateY(-1px);
-    }
-
-    .card.status-closed {
-      border-left: 3px solid var(--success);
-    }
-
-    .card.status-frontier {
-      border-left: 3px solid var(--frontier);
-      background: #fafcff;
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .card.status-blocked {
-      border-left: 3px solid #cbd5e1;
-      opacity: 0.85;
+      background: #fafafa;
+      border-style: dashed;
     }
 
     .card-meta-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .ticket-id {
@@ -613,32 +606,33 @@ const generatedHtml = `<!DOCTYPE html>
       color: var(--text-dim);
     }
 
+    /* Soft Pastel Badges */
     .ticket-badge {
       font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
     }
 
     .badge-closed {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid var(--success-border);
+      background: var(--pastel-green-bg);
+      color: var(--pastel-green-text);
+      border: 1px solid var(--pastel-green-border);
     }
 
     .badge-frontier {
-      background: var(--frontier-bg);
-      color: var(--frontier);
-      border: 1px solid var(--frontier-border);
+      background: var(--pastel-blue-bg);
+      color: var(--pastel-blue-text);
+      border: 1px solid var(--pastel-blue-border);
     }
 
     .badge-blocked {
-      background: var(--blocked-bg);
-      color: var(--blocked);
-      border: 1px solid var(--blocked-border);
+      background: var(--pastel-gray-bg);
+      color: var(--pastel-gray-text);
+      border: 1px solid var(--pastel-gray-border);
     }
 
     .ticket-title {
@@ -646,11 +640,11 @@ const generatedHtml = `<!DOCTYPE html>
       font-weight: 600;
       color: #0f172a;
       line-height: 1.4;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .ticket-summary {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -665,7 +659,7 @@ const generatedHtml = `<!DOCTYPE html>
     }
 
     .unlocked-tag {
-      margin-top: 8px;
+      margin-top: 10px;
       font-family: var(--font-mono);
       font-size: 11px;
       color: #6366f1;
@@ -694,8 +688,8 @@ const generatedHtml = `<!DOCTYPE html>
       margin-bottom: 12px;
     }
 
-    .ledger-panel.fog h3 { color: #d97706; }
-    .ledger-panel.out h3 { color: #dc2626; }
+    .ledger-panel.fog h3 { color: #b45309; }
+    .ledger-panel.out h3 { color: #b91c1c; }
 
     .ledger-list {
       list-style: none;
@@ -765,40 +759,40 @@ const generatedHtml = `<!DOCTYPE html>
     </div>
     
     <div class="flowchart-wrapper">
-      <svg class="chart" viewBox="0 0 940 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="chart" viewBox="0 0 980 380" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+          <marker id="arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#cbd5e1" />
           </marker>
-          <marker id="arrow-closed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#16a34a" />
+          <marker id="arrow-closed" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#86efac" />
           </marker>
-          <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+          <marker id="arrow-active" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 6 4 L 0 7 z" fill="#93c5fd" />
           </marker>
         </defs>
 
-        <!-- Connecting Lines -->
-        <path d="M 170 81 L 220 81" stroke="${line2to3.color}" stroke-width="1.5" marker-end="${line2to3.marker}" />
-        <path d="M 290 117 L 290 180" stroke="${line3to9.color}" stroke-width="1.5" marker-end="${line3to9.marker}" />
-        <path d="M 360 81 L 410 81" stroke="${line3to5.color}" stroke-width="1.5" marker-end="${line3to5.marker}" />
-        <path d="M 480 117 L 480 180" stroke="${line5to10.color}" stroke-width="1.5" marker-end="${line5to10.marker}" />
-        <path d="M 550 65 L 610 52" stroke="${line5to4.color}" stroke-width="1.5" marker-end="${line5to4.marker}" />
-        <path d="M 550 81 L 610 120" stroke="${line5to6.color}" stroke-width="1.5" marker-end="${line5to6.marker}" />
-        <path d="M 550 97 L 610 185" stroke="${line5to7.color}" stroke-width="1.5" marker-end="${line5to7.marker}" />
-        <path d="M 680 162 L 680 176" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 3" />
-        <path d="M 750 205 L 800 205" stroke="${line7to8.color}" stroke-width="1.5" marker-end="${line7to8.marker}" />
+        <!-- Connecting Lines: Thin 1.2px pastel hairline rules -->
+        <path d="M 170 73 L 220 73" stroke="${line2to3.color}" stroke-width="1.2" marker-end="${line2to3.marker}" />
+        <path d="M 290 106 L 290 175" stroke="${line3to9.color}" stroke-width="1.2" marker-end="${line3to9.marker}" />
+        <path d="M 360 73 L 410 73" stroke="${line3to5.color}" stroke-width="1.2" marker-end="${line3to5.marker}" />
+        <path d="M 480 106 L 480 175" stroke="${line5to10.color}" stroke-width="1.2" marker-end="${line5to10.marker}" />
+        <path d="M 550 58 L 605 52" stroke="${line5to4.color}" stroke-width="1.2" marker-end="${line5to4.marker}" />
+        <path d="M 550 73 L 605 160" stroke="${line5to6.color}" stroke-width="1.2" marker-end="${line5to6.marker}" />
+        <path d="M 550 88 L 605 270" stroke="${line5to7.color}" stroke-width="1.2" marker-end="${line5to7.marker}" />
+        <path d="M 677 206 L 677 255" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="3 3" />
+        <path d="M 750 288 L 805 288" stroke="${line7to8.color}" stroke-width="1.2" marker-end="${line7to8.marker}" />
 
         <!-- Nodes -->
         ${processedTickets.map(renderSvgNode).join('')}
 
-        <!-- Final Destination Target -->
-        <g transform="translate(800, 45)">
-          <rect width="125" height="72" rx="6" fill="#ffffff" stroke="#7e22ce" stroke-width="1.5"/>
-          <rect x="1" y="1" width="123" height="20" rx="5" fill="#faf5ff"/>
-          <text x="10" y="14" fill="#7e22ce" font-family="ui-monospace, monospace" font-size="10" font-weight="700">SPEC // DESTINATION</text>
-          <text x="12" y="38" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Locked Blueprint</text>
-          <text x="12" y="52" fill="#7e22ce" font-family="-apple-system, sans-serif" font-size="10">Ready to Build</text>
+        <!-- Final Destination Target (Soft Pastel Lavender) -->
+        <g transform="translate(805, 25)">
+          <rect width="145" height="66" rx="6" fill="#faf7fd" stroke="#e9d5ff" stroke-width="1"/>
+          <rect x="1" y="1" width="143" height="18" rx="5" fill="#f3e8ff"/>
+          <text x="10" y="13" fill="#7e22ce" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700">SPEC // DESTINATION</text>
+          <text x="12" y="34" fill="#0f172a" font-family="-apple-system, sans-serif" font-size="11" font-weight="600">Locked Blueprint</text>
+          <text x="12" y="48" fill="#7e22ce" font-family="-apple-system, sans-serif" font-size="10">Ready to Build</text>
         </g>
       </svg>
     </div>
